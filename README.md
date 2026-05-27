@@ -1,8 +1,8 @@
-# CodexBar 🎚️ - May your tokens never run out.
+# TokenUsage 🎚️ - May your tokens never run out.
 
-Tiny macOS 14+ menu bar app that keeps AI coding-provider limits visible and shows when each window resets. CodexBar supports Codex, Claude, Cursor, Gemini, Copilot, z.ai, Kiro, Vertex AI, Augment, OpenRouter, Codebuff, and many newer coding providers. One status item per provider (or Merge Icons mode with a provider switcher); enable what you use from Settings. No Dock icon, minimal UI, dynamic bar icons in the menu bar.
+Tiny macOS 14+ menu bar app that keeps AI coding-provider limits visible and shows when each window resets. TokenUsage supports Codex, Claude, Cursor, Gemini, Copilot, z.ai, Kiro, Vertex AI, Augment, OpenRouter, Codebuff, and many newer coding providers. One status item per provider (or Merge Icons mode with a provider switcher); enable what you use from Settings. No Dock icon, minimal UI, dynamic bar icons in the menu bar.
 
-<img src="codexbar.png" alt="CodexBar menu screenshot" width="520" />
+<img src="tokenusage.png" alt="TokenUsage menu screenshot" width="520" />
 
 ## Install
 
@@ -10,21 +10,21 @@ Tiny macOS 14+ menu bar app that keeps AI coding-provider limits visible and sho
 - macOS 14+ (Sonoma)
 
 ### GitHub Releases
-Download: <https://github.com/steipete/CodexBar/releases>
+Download: <https://github.com/steipete/TokenUsage/releases>
 
 ### Homebrew
 ```bash
-brew install --cask steipete/tap/codexbar
+brew install --cask steipete/tap/tokenusage
 ```
 
 ### CLI Tarballs (macOS/Linux)
 Homebrew formula (Linux today):
 ```bash
-brew install steipete/tap/codexbar
+brew install steipete/tap/tokenusage
 ```
 Or download release tarballs from GitHub Releases:
-- macOS: `CodexBarCLI-v<tag>-macos-arm64.tar.gz`, `CodexBarCLI-v<tag>-macos-x86_64.tar.gz`
-- Linux: `CodexBarCLI-v<tag>-linux-aarch64.tar.gz`, `CodexBarCLI-v<tag>-linux-x86_64.tar.gz`
+- macOS: `TokenUsageCLI-v<tag>-macos-arm64.tar.gz`, `TokenUsageCLI-v<tag>-macos-x86_64.tar.gz`
+- Linux: `TokenUsageCLI-v<tag>-linux-aarch64.tar.gz`, `TokenUsageCLI-v<tag>-linux-x86_64.tar.gz`
 
 ### First run
 - Open Settings → Providers and enable what you use.
@@ -76,31 +76,31 @@ show an incident indicator.
 - Merge Icons mode to combine providers into one status item + switcher.
 - Display controls for provider icons, labels, bars, reset-time style, and highest-usage auto-selection.
 - Refresh cadence presets (manual, 1m, 2m, 5m, 15m).
-- Bundled CLI (`codexbar`) for scripts and CI (including `codexbar cost --provider codex`, `claude`, or `both` for local cost usage); macOS and Linux CLI builds available.
+- Bundled CLI (`tokenusage`) for scripts and CI (including `tokenusage cost --provider codex`, `claude`, or `both` for local cost usage); macOS and Linux CLI builds available.
 - WidgetKit widgets for supported providers.
 - Optional session quota notifications and weekly-reset confetti.
 - Privacy-first: on-device parsing by default; browser cookies are opt-in and reused (no passwords stored).
 
 ## Privacy note
-Wondering if CodexBar scans your disk? It doesn’t crawl your filesystem; it reads a small set of known locations (browser cookies/local storage, provider config files, local JSONL logs) when the related features are enabled. Provider tokens and token-account settings live in `~/.codexbar/config.json` with restrictive file permissions. See the discussion and audit notes in [issue #12](https://github.com/steipete/CodexBar/issues/12).
+Wondering if TokenUsage scans your disk? It doesn’t crawl your filesystem; it reads a small set of known locations (browser cookies/local storage, provider config files, local JSONL logs) when the related features are enabled. Provider tokens and token-account settings live in `~/.tokenusage/config.json` with restrictive file permissions. See the discussion and audit notes in [issue #12](https://github.com/steipete/TokenUsage/issues/12).
 
 ## macOS permissions (why they’re needed)
 - **Full Disk Access (optional)**: only required to read Safari cookies/local storage for web-based providers. If you don’t grant it, use another supported browser, manual cookies/API keys, OAuth, or CLI/local sources where that provider supports them.
 - **Keychain access (prompted by macOS)**:
   - Chromium cookie import needs the browser “Safe Storage” key to decrypt cookies.
-  - Claude OAuth bootstrap may read the Claude CLI Keychain item when CodexBar has no usable cached credentials.
-  - CodexBar may use Keychain for browser cookie decryption, cached cookie headers, and OAuth/device-flow credentials where those sources require it.
+  - Claude OAuth bootstrap may read the Claude CLI Keychain item when TokenUsage has no usable cached credentials.
+  - TokenUsage may use Keychain for browser cookie decryption, cached cookie headers, and OAuth/device-flow credentials where those sources require it.
   - **How do I prevent those keychain alerts?**
     - Open **Keychain Access.app** → login keychain → search the prompted item (for Claude OAuth, usually “Claude Code-credentials”).
-    - Open the item → **Access Control** → add `CodexBar.app` under “Always allow access by these applications”.
-    - Prefer adding just CodexBar (avoid “Allow all applications” unless you want it wide open).
-    - Relaunch CodexBar after saving.
+    - Open the item → **Access Control** → add `TokenUsage.app` under “Always allow access by these applications”.
+    - Prefer adding just TokenUsage (avoid “Allow all applications” unless you want it wide open).
+    - Relaunch TokenUsage after saving.
     - Reference screenshot: ![Keychain access control](docs/keychain-allow.png)
   - **How to do the same for the browser?**
     - Find the browser’s “Safe Storage” key (e.g., “Chrome Safe Storage”, “Brave Safe Storage”, “Microsoft Edge Safe Storage”).
-    - Open the item → **Access Control** → add `CodexBar.app` under “Always allow access by these applications”.
-    - This removes the prompt when CodexBar decrypts cookies for that browser.
-- **Files & Folders prompts (folder/volume access)**: CodexBar launches provider CLIs and local probes for some providers. If those helpers read a project directory or external drive, macOS may ask CodexBar for that folder/volume (e.g., Desktop or an external volume). This is driven by the helper’s working directory, not background disk scanning.
+    - Open the item → **Access Control** → add `TokenUsage.app` under “Always allow access by these applications”.
+    - This removes the prompt when TokenUsage decrypts cookies for that browser.
+- **Files & Folders prompts (folder/volume access)**: TokenUsage launches provider CLIs and local probes for some providers. If those helpers read a project directory or external drive, macOS may ask TokenUsage for that folder/volume (e.g., Desktop or an external volume). This is driven by the helper’s working directory, not background disk scanning.
 - **What we do not request in the background**: no Screen Recording or Accessibility permissions; user-triggered helper actions may ask macOS for Automation permission to open Terminal. No passwords are stored (browser cookies are reused when you opt in).
 
 ## Docs
@@ -130,9 +130,9 @@ Wondering if CodexBar scans your disk? It doesn’t crawl your filesystem; it re
 Requires macOS 14+ and Swift 6.2+.
 
 ```bash
-./Scripts/package_app.sh        # builds CodexBar.app in-place
-CODEXBAR_SIGNING=adhoc ./Scripts/package_app.sh  # ad-hoc signing (no Apple Developer account)
-open CodexBar.app
+./Scripts/package_app.sh        # builds TokenUsage.app in-place
+TOKENUSAGE_SIGNING=adhoc ./Scripts/package_app.sh  # ad-hoc signing (no Apple Developer account)
+open TokenUsage.app
 ```
 
 Dev loop:
@@ -145,8 +145,8 @@ pnpm docs:list                       # list docs with frontmatter summaries
 
 CLI install:
 ```bash
-# after installing CodexBar.app in /Applications
-./bin/install-codexbar-cli.sh
+# after installing TokenUsage.app in /Applications
+./bin/install-tokenusage-cli.sh
 ```
 
 ## Related
@@ -155,7 +155,7 @@ CLI install:
 - 🧿 [oracle](https://askoracle.dev) — Ask the oracle when you're stuck. Invoke GPT-5 Pro with a custom context and files.
 
 ## Looking for a Windows version?
-- [Win-CodexBar](https://github.com/Finesssee/Win-CodexBar)
+- [Win-TokenUsage](https://github.com/Finesssee/Win-TokenUsage)
 
 ## Credits
 Inspired by [ccusage](https://github.com/ryoppippi/ccusage) (MIT), specifically the cost usage tracking.

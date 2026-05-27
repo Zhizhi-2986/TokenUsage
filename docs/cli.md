@@ -1,51 +1,51 @@
 ---
-summary: "CodexBar CLI for fetching usage from the command line."
+summary: "TokenUsage CLI for fetching usage from the command line."
 read_when:
-  - "You want to call CodexBar data from scripts or a terminal."
+  - "You want to call TokenUsage data from scripts or a terminal."
   - "Adding or modifying Commander-based CLI commands."
   - "Aligning menubar and CLI output/behavior."
 ---
 
-# CodexBar CLI
+# TokenUsage CLI
 
 A lightweight Commander-based CLI that mirrors the menu bar app’s provider fetchers and config file.
 Use it when you need usage numbers in scripts, CI, or dashboards without UI.
 
 ## Install
-- In the app: **Preferences → Advanced → Install CLI**. This symlinks `CodexBarCLI` to `/usr/local/bin/codexbar` and `/opt/homebrew/bin/codexbar`.
-- From the repo, after installing `CodexBar.app` in `/Applications`: `./bin/install-codexbar-cli.sh` (same symlink targets).
-- Manual: `ln -sf "/Applications/CodexBar.app/Contents/Helpers/CodexBarCLI" /usr/local/bin/codexbar`.
+- In the app: **Preferences → Advanced → Install CLI**. This symlinks `TokenUsageCLI` to `/usr/local/bin/tokenusage` and `/opt/homebrew/bin/tokenusage`.
+- From the repo, after installing `TokenUsage.app` in `/Applications`: `./bin/install-tokenusage-cli.sh` (same symlink targets).
+- Manual: `ln -sf "/Applications/TokenUsage.app/Contents/Helpers/TokenUsageCLI" /usr/local/bin/tokenusage`.
 
 ### Release tarball install (macOS/Linux)
-- Homebrew formula (Linux today): `brew install steipete/tap/codexbar`.
+- Homebrew formula (Linux today): `brew install steipete/tap/tokenusage`.
 - Download release tarballs from GitHub Releases:
-  - macOS: `CodexBarCLI-v<tag>-macos-arm64.tar.gz`, `CodexBarCLI-v<tag>-macos-x86_64.tar.gz`
-  - Linux: `CodexBarCLI-v<tag>-linux-aarch64.tar.gz`, `CodexBarCLI-v<tag>-linux-x86_64.tar.gz`
-- Extract and run `./codexbar` (symlink) or `./CodexBarCLI`.
+  - macOS: `TokenUsageCLI-v<tag>-macos-arm64.tar.gz`, `TokenUsageCLI-v<tag>-macos-x86_64.tar.gz`
+  - Linux: `TokenUsageCLI-v<tag>-linux-aarch64.tar.gz`, `TokenUsageCLI-v<tag>-linux-x86_64.tar.gz`
+- Extract and run `./tokenusage` (symlink) or `./TokenUsageCLI`.
 
 ```
-tar -xzf CodexBarCLI-v0.17.0-macos-x86_64.tar.gz
-./codexbar --version
-./codexbar usage --format json --pretty
+tar -xzf TokenUsageCLI-v0.17.0-macos-x86_64.tar.gz
+./tokenusage --version
+./tokenusage usage --format json --pretty
 ```
 
 ## Build
-- `./Scripts/package_app.sh` (or `./Scripts/compile_and_run.sh`) bundles `CodexBarCLI` into `CodexBar.app/Contents/Helpers/CodexBarCLI`.
-- Standalone: `swift build -c release --product CodexBarCLI` (binary at `./.build/release/CodexBarCLI`).
+- `./Scripts/package_app.sh` (or `./Scripts/compile_and_run.sh`) bundles `TokenUsageCLI` into `TokenUsage.app/Contents/Helpers/TokenUsageCLI`.
+- Standalone: `swift build -c release --product TokenUsageCLI` (binary at `./.build/release/TokenUsageCLI`).
 - Dependencies: Swift 6.2+, Commander package (`https://github.com/steipete/Commander`).
 
 ## Configuration
-CodexBar reads `~/.codexbar/config.json` for provider settings, secrets, and ordering.
+TokenUsage reads `~/.tokenusage/config.json` for provider settings, secrets, and ordering.
 See `docs/configuration.md` for the schema.
 
 ## Command
-- `codexbar` defaults to the `usage` command.
+- `tokenusage` defaults to the `usage` command.
   - `--format text|json` (default: text).
-- `codexbar cost` prints local token cost usage for Claude + Codex without web/CLI access.
+- `tokenusage cost` prints local token cost usage for Claude + Codex without web/CLI access.
   - `--format text|json` (default: text).
   - `--refresh` ignores cached scans.
-- `codexbar cache clear` clears local CodexBar caches.
-  - `--cookies` removes cached browser-cookie headers from the CodexBar Keychain cache.
+- `tokenusage cache clear` clears local TokenUsage caches.
+  - `--cookies` removes cached browser-cookie headers from the TokenUsage Keychain cache.
   - `--cookies --provider <id>` removes browser-cookie cache entries for that provider, including managed Codex account scopes.
   - `--cost` removes local cost-usage scan caches.
   - `--all` clears both cookies and cost caches. `--provider` is cookie-only and cannot be combined with `--cost` or `--all`.
@@ -74,13 +74,13 @@ See `docs/configuration.md` for the schema.
 - Global flags: `-h/--help`, `-V/--version`, `-v/--verbose`, `--no-color`, `--log-level <trace|verbose|debug|info|warning|error|critical>`, `--json-output`, `--json-only`.
   - `--json-output`: JSONL logs on stderr (machine-readable).
   - `--json-only`: suppress non-JSON output; errors become JSON payloads.
-- `codexbar config validate` checks `~/.codexbar/config.json` for invalid fields.
+- `tokenusage config validate` checks `~/.tokenusage/config.json` for invalid fields.
   - `--format text|json`, `--pretty`, and `--json-only` are supported.
   - Warnings keep exit code 0; errors exit non-zero.
-- `codexbar config dump` prints the normalized config JSON.
+- `tokenusage config dump` prints the normalized config JSON.
 
 ### Token accounts
-The CLI reads multi-account tokens from `~/.codexbar/config.json` (same file as the app).
+The CLI reads multi-account tokens from `~/.tokenusage/config.json` (same file as the app).
 - Select a specific account: `--account <label>` (matches the label/email in the file).
 - Select by index (1-based): `--account-index <n>`.
 - Fetch all accounts for the provider: `--all-accounts`.
@@ -89,7 +89,7 @@ For Claude, token accounts accept either `sessionKey` cookies or OAuth access to
 OAuth usage requires the `user:profile` scope; inference-only tokens will return an error.
 
 ### Cost JSON payload
-`codexbar cost --format json` emits an array of payloads (one per provider).
+`tokenusage cost --format json` emits an array of payloads (one per provider).
 - `provider`, `source`, `updatedAt`
 - `sessionTokens`, `sessionCostUSD`
 - `last30DaysTokens`, `last30DaysCostUSD`
@@ -98,27 +98,27 @@ OAuth usage requires the `user:profile` scope; inference-only tokens will return
 
 ## Example usage
 ```
-codexbar                          # text, respects app toggles
-codexbar --provider claude        # force Claude
-codexbar --provider all           # query all registered providers
-codexbar --format json --pretty   # machine output
-codexbar --format json --provider both
-codexbar cost                     # local cost usage (last 30 days + today)
-codexbar cost --provider claude --format json --pretty
-COPILOT_API_TOKEN=... codexbar --provider copilot --format json --pretty
-codexbar --status                 # include status page indicator/description
-codexbar --provider codex --source oauth --format json --pretty
-codexbar --provider codex --source web --format json --pretty
-codexbar --provider claude --account steipete@gmail.com
-codexbar --provider claude --all-accounts --format json --pretty
-codexbar --json-only --format json --pretty
-codexbar --provider gemini --source api --format json --pretty
-KILO_API_KEY=... codexbar --provider kilo --source api --format json --pretty
-codexbar config validate --format json --pretty
-codexbar config dump --pretty
-codexbar cache clear --cookies
-codexbar cache clear --cookies --provider claude
-codexbar cache clear --all --format json --pretty
+tokenusage                          # text, respects app toggles
+tokenusage --provider claude        # force Claude
+tokenusage --provider all           # query all registered providers
+tokenusage --format json --pretty   # machine output
+tokenusage --format json --provider both
+tokenusage cost                     # local cost usage (last 30 days + today)
+tokenusage cost --provider claude --format json --pretty
+COPILOT_API_TOKEN=... tokenusage --provider copilot --format json --pretty
+tokenusage --status                 # include status page indicator/description
+tokenusage --provider codex --source oauth --format json --pretty
+tokenusage --provider codex --source web --format json --pretty
+tokenusage --provider claude --account steipete@gmail.com
+tokenusage --provider claude --all-accounts --format json --pretty
+tokenusage --json-only --format json --pretty
+tokenusage --provider gemini --source api --format json --pretty
+KILO_API_KEY=... tokenusage --provider kilo --source api --format json --pretty
+tokenusage config validate --format json --pretty
+tokenusage config dump --pretty
+tokenusage cache clear --cookies
+tokenusage cache clear --cookies --provider claude
+tokenusage cache clear --all --format json --pretty
 ```
 
 ### Sample output (text)
@@ -209,7 +209,7 @@ Note: Using CLI fallback
 - Kilo text output splits identity into `Plan:` and `Activity:` lines; in `--source auto`, resolved CLI fetches add
   `Note: Using CLI fallback`.
 - Kilo auto-mode failures include a fallback-attempt summary line in text mode (API attempt then CLI attempt).
-- OpenAI web requires a signed-in `chatgpt.com` session in a supported browser or a manual cookie header. No passwords are stored; CodexBar reuses cookies.
-- Safari cookie import may require granting CodexBar Full Disk Access (System Settings → Privacy & Security → Full Disk Access).
+- OpenAI web requires a signed-in `chatgpt.com` session in a supported browser or a manual cookie header. No passwords are stored; TokenUsage reuses cookies.
+- Safari cookie import may require granting TokenUsage Full Disk Access (System Settings → Privacy & Security → Full Disk Access).
 - The `openaiDashboard` JSON field is normally sourced from the app’s cached dashboard snapshot; `--source auto|web` refreshes it live via WebKit using a per-account cookie store.
 - Future: optional `--from-cache` flag to read the menubar app’s persisted snapshot (if/when that file lands).

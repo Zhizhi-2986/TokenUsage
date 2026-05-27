@@ -15,8 +15,8 @@ read_when:
 - `Scripts/changelog-to-html.sh`: converts the per-version changelog section to HTML for Sparkle.
 
 ## Bundle contents
-- `CodexBarWidget.appex` bundled with app-group entitlements.
-- `CodexBarCLI` copied to `CodexBar.app/Contents/Helpers/` for symlinking.
+- `TokenUsageWidget.appex` bundled with app-group entitlements.
+- `TokenUsageCLI` copied to `TokenUsage.app/Contents/Helpers/` for symlinking.
 - SwiftPM resource bundles (e.g. `KeyboardShortcuts_KeyboardShortcuts.bundle`) copied into `Contents/Resources` (required for `KeyboardShortcuts.Recorder`).
 
 ## Releases

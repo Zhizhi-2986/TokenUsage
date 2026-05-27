@@ -17,12 +17,12 @@ Copilot uses GitHub OAuth device flow and the Copilot internal usage API. No bro
    - Token polling:
      - `POST https://github.com/login/oauth/access_token`
    - Optional enterprise host:
-     - set Copilot `enterpriseHost` in `~/.codexbar/config.json` or the provider settings UI
-     - CodexBar normalizes values such as `https://octocorp.ghe.com/login` to `octocorp.ghe.com`
+     - set Copilot `enterpriseHost` in `~/.tokenusage/config.json` or the provider settings UI
+     - TokenUsage normalizes values such as `https://octocorp.ghe.com/login` to `octocorp.ghe.com`
      - device flow uses `https://<enterpriseHost>/login/...`
    - Scope: `read:user`.
    - Token stored in config:
-     - `~/.codexbar/config.json` → `providers[].apiKey` for `copilot`
+     - `~/.tokenusage/config.json` → `providers[].apiKey` for `copilot`
       - token accounts use `providers[].tokenAccounts`
 
 2) **Usage fetch**
@@ -43,7 +43,7 @@ Copilot uses GitHub OAuth device flow and the Copilot internal usage API. No bro
 - Plan label from `copilotPlan`.
 
 ## Key files
-- `Sources/CodexBarCore/Providers/Copilot/CopilotUsageFetcher.swift`
-- `Sources/CodexBarCore/Providers/Copilot/CopilotDeviceFlow.swift`
-- `Sources/CodexBar/Providers/Copilot/CopilotLoginFlow.swift`
-- `Sources/CodexBar/CopilotTokenStore.swift` (legacy migration helper)
+- `Sources/TokenUsageCore/Providers/Copilot/CopilotUsageFetcher.swift`
+- `Sources/TokenUsageCore/Providers/Copilot/CopilotDeviceFlow.swift`
+- `Sources/TokenUsage/Providers/Copilot/CopilotLoginFlow.swift`
+- `Sources/TokenUsage/CopilotTokenStore.swift` (legacy migration helper)

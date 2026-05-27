@@ -6,7 +6,7 @@ read_when:
   - Troubleshooting Keychain prompts in dev
 ---
 
-# CodexBar Development Guide
+# TokenUsage Development Guide
 
 ## Quick Start
 
@@ -28,11 +28,11 @@ read_when:
 
 ### Development Workflow
 
-1. **Make code changes** in `Sources/CodexBar/`
+1. **Make code changes** in `Sources/TokenUsage/`
 2. **Run** `./Scripts/compile_and_run.sh --test` to test, rebuild, and launch
-3. **Check logs** in Console.app (filter by "codexbar")
+3. **Check logs** in Console.app (filter by "tokenusage")
 4. **Optional file log**: enable Debug → Logging → "Enable file logging" to write
-   `~/Library/Logs/CodexBar/CodexBar.log` (verbosity defaults to "Verbose")
+   `~/Library/Logs/TokenUsage/TokenUsage.log` (verbosity defaults to "Verbose")
 
 ## Keychain Prompts (Development)
 
@@ -40,7 +40,7 @@ read_when:
 You'll see **one keychain prompt per stored credential** on the first launch. This is a **one-time migration** that converts existing keychain items to use `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`.
 
 ### Subsequent Rebuilds
-The migration flag is stored in UserDefaults, so migrated CodexBar-owned items should not prompt again. Ad-hoc
+The migration flag is stored in UserDefaults, so migrated TokenUsage-owned items should not prompt again. Ad-hoc
 signing can still prompt for other keychain surfaces; use `./Scripts/compile_and_run.sh --clear-adhoc-keychain`
 when you intentionally want to reset ad-hoc keychain state.
 
@@ -52,13 +52,13 @@ when you intentionally want to reset ad-hoc keychain state.
 
 ### Reset Migration (Testing)
 ```bash
-defaults delete com.steipete.codexbar KeychainMigrationV1Completed
+defaults delete com.steipete.tokenusage KeychainMigrationV1Completed
 ```
 
 ## Augment Cookie Refresh
 
 ### How It Works
-CodexBar checks Augment through the provider fetch pipeline. Auto mode tries the Augment CLI first, then the
+TokenUsage checks Augment through the provider fetch pipeline. Auto mode tries the Augment CLI first, then the
 browser-cookie web path. The web path reuses cached cookies when possible and imports from supported browsers when
 the cache is missing or rejected.
 
@@ -79,9 +79,9 @@ If automatic import fails:
 ## Project Structure
 
 ```
-CodexBar/
-├── Sources/CodexBar/          # Main app (SwiftUI + AppKit)
-│   ├── CodexBarApp.swift      # App entry point
+TokenUsage/
+├── Sources/TokenUsage/          # Main app (SwiftUI + AppKit)
+│   ├── TokenUsageApp.swift      # App entry point
 │   ├── StatusItemController.swift  # Menu bar icon
 │   ├── UsageStore.swift       # Usage data management
 │   ├── SettingsStore.swift    # User preferences
@@ -91,17 +91,17 @@ CodexBar/
 │   │   ├── Codex/             # OpenAI Codex
 │   │   └── ...
 │   └── KeychainMigration.swift  # One-time keychain migration
-├── Sources/CodexBarCore/      # Shared business logic
-├── Tests/CodexBarTests/       # XCTest suite
+├── Sources/TokenUsageCore/      # Shared business logic
+├── Tests/TokenUsageTests/       # XCTest suite
 └── Scripts/                   # Build and packaging scripts
 ```
 
 ## Common Tasks
 
 ### Add a New Provider
-1. Add a `UsageProvider` case in `Sources/CodexBarCore/Providers/Providers.swift`
-2. Add core descriptor/fetcher wiring under `Sources/CodexBarCore/Providers/YourProvider/`
-3. Add app-side implementation under `Sources/CodexBar/Providers/YourProvider/`
+1. Add a `UsageProvider` case in `Sources/TokenUsageCore/Providers/Providers.swift`
+2. Add core descriptor/fetcher wiring under `Sources/TokenUsageCore/Providers/YourProvider/`
+3. Add app-side implementation under `Sources/TokenUsage/Providers/YourProvider/`
 4. Register the implementation in `ProviderImplementationRegistry`
 5. Add icon assets such as `Resources/ProviderIcon-yourprovider.svg`
 
@@ -109,7 +109,7 @@ CodexBar/
 1. Enable Debug → Logging → "Enable file logging" or raise verbosity in the app settings.
 2. Reproduce with `./Scripts/compile_and_run.sh`.
 3. Check logs in Console.app:
-   - Filter: `subsystem:com.steipete.codexbar category:augment`
+   - Filter: `subsystem:com.steipete.tokenusage category:augment`
    - Importer messages include the `[augment-cookie]` prefix
 
 ### Run Tests Only
@@ -128,13 +128,13 @@ swiftlint --strict
 ### Local Development Build
 ```bash
 ./Scripts/package_app.sh
-# Creates: CodexBar.app (Developer ID by default; set CODEXBAR_SIGNING=adhoc for ad-hoc signing)
+# Creates: TokenUsage.app (Developer ID by default; set TOKENUSAGE_SIGNING=adhoc for ad-hoc signing)
 ```
 
 ### Release Build (Notarized)
 ```bash
 ./Scripts/sign-and-notarize.sh
-# Creates: CodexBar-<version>.zip and CodexBar-<version>.dSYM.zip
+# Creates: TokenUsage-<version>.zip and TokenUsage-<version>.dSYM.zip
 ```
 
 See `docs/RELEASING.md` for full release process.
@@ -144,16 +144,16 @@ See `docs/RELEASING.md` for full release process.
 ### App Won't Launch
 ```bash
 # Check crash logs
-ls -lt ~/Library/Logs/DiagnosticReports/CodexBar* | head -5
+ls -lt ~/Library/Logs/DiagnosticReports/TokenUsage* | head -5
 
 # Check Console.app for errors
-# Filter: process:CodexBar
+# Filter: process:TokenUsage
 ```
 
 ### Keychain Prompts Keep Appearing
 ```bash
 # Verify migration completed
-defaults read com.steipete.codexbar KeychainMigrationV1Completed
+defaults read com.steipete.tokenusage KeychainMigrationV1Completed
 # Should output: 1
 
 # Check migration logs
@@ -177,7 +177,7 @@ log show --predicate 'category == "keychain-migration"' --last 5m
 ### Cookie Management
 - Automatic browser import via SweetCookieKit
 - Keychain cache for some imported browser cookies and OAuth/device-flow credentials
-- `~/.codexbar/config.json` for provider settings, manual cookies, and stored API keys
+- `~/.tokenusage/config.json` for provider settings, manual cookies, and stored API keys
 - Manual override for debugging
 - Browser-cookie import when cached sessions need refresh
 

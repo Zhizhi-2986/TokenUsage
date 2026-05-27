@@ -1,43 +1,43 @@
 ---
-summary: "Homebrew Cask release steps for CodexBar (Sparkle-disabled builds)."
+summary: "Homebrew Cask release steps for TokenUsage (Sparkle-disabled builds)."
 read_when:
-  - Publishing a CodexBar release via Homebrew
+  - Publishing a TokenUsage release via Homebrew
   - Updating the Homebrew tap cask definition
 ---
 
-# CodexBar Homebrew Release Playbook
+# TokenUsage Homebrew Release Playbook
 
-Homebrew is for the UI app via Cask. When installed via Homebrew, CodexBar disables Sparkle and shows a "update via brew" hint in About.
+Homebrew is for the UI app via Cask. When installed via Homebrew, TokenUsage disables Sparkle and shows a "update via brew" hint in About.
 
 ## Prereqs
 - Homebrew installed.
 - Access to the tap repo: `../homebrew-tap`.
 
-## 1) Release CodexBar normally
-Follow `docs/RELEASING.md` to publish `CodexBar-<version>.zip` to GitHub Releases.
+## 1) Release TokenUsage normally
+Follow `docs/RELEASING.md` to publish `TokenUsage-<version>.zip` to GitHub Releases.
 
 ## 2) Update the Homebrew tap cask
-In `../homebrew-tap`, add/update the cask at `Casks/codexbar.rb`:
-- `url` points at the GitHub release asset: `.../releases/download/v<version>/CodexBar-<version>.zip`
+In `../homebrew-tap`, add/update the cask at `Casks/tokenusage.rb`:
+- `url` points at the GitHub release asset: `.../releases/download/v<version>/TokenUsage-<version>.zip`
 - Update `sha256` to match that zip.
-- Keep `depends_on arch: :arm64` and `depends_on macos: ">= :sonoma"` (CodexBar is macOS 14+).
+- Keep `depends_on arch: :arm64` and `depends_on macos: ">= :sonoma"` (TokenUsage is macOS 14+).
 
 ## 2b) Update the Homebrew tap formula (CLI)
-In `../homebrew-tap`, add/update the formula at `Formula/codexbar.rb`:
+In `../homebrew-tap`, add/update the formula at `Formula/tokenusage.rb`:
 - `url` points at the GitHub release assets:
-  - macOS: `.../releases/download/v<version>/CodexBarCLI-v<version>-macos-arm64.tar.gz`
-  - macOS: `.../releases/download/v<version>/CodexBarCLI-v<version>-macos-x86_64.tar.gz`
-  - Linux: `.../releases/download/v<version>/CodexBarCLI-v<version>-linux-aarch64.tar.gz`
-  - Linux: `.../releases/download/v<version>/CodexBarCLI-v<version>-linux-x86_64.tar.gz`
+  - macOS: `.../releases/download/v<version>/TokenUsageCLI-v<version>-macos-arm64.tar.gz`
+  - macOS: `.../releases/download/v<version>/TokenUsageCLI-v<version>-macos-x86_64.tar.gz`
+  - Linux: `.../releases/download/v<version>/TokenUsageCLI-v<version>-linux-aarch64.tar.gz`
+  - Linux: `.../releases/download/v<version>/TokenUsageCLI-v<version>-linux-x86_64.tar.gz`
 - Update all `sha256` values to match those tarballs.
 
 ## 3) Verify install
 ```sh
-brew uninstall --cask codexbar || true
+brew uninstall --cask tokenusage || true
 brew untap steipete/tap || true
 brew tap steipete/tap
-brew install --cask steipete/tap/codexbar
-open -a CodexBar
+brew install --cask steipete/tap/tokenusage
+open -a TokenUsage
 ```
 
 ## 4) Push tap changes

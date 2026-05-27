@@ -1,4 +1,4 @@
-import CodexBarCore
+import TokenUsageCore
 import Testing
 
 @Suite

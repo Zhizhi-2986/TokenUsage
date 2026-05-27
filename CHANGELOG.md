@@ -138,7 +138,7 @@
 ### Development & Tooling
 - CLI / Debug: add user-facing browser-cookie cache clearing, including provider-scoped CLI clearing that removes managed Codex account cookie caches (#592, fixes #591). Thanks @coygeek!
 - Diagnostics: add lightweight battery instrumentation for menu updates and refresh work (#708).
-- Build script: make CodexBar-owned ad-hoc keychain cleanup opt-in with `--clear-adhoc-keychain`, and extend the explicit reset path to clear both `com.steipete.CodexBar` and `com.steipete.codexbar.cache`. Thanks @magnaprog!
+- Build script: make TokenUsage-owned ad-hoc keychain cleanup opt-in with `--clear-adhoc-keychain`, and extend the explicit reset path to clear both `com.steipete.TokenUsage` and `com.steipete.tokenusage.cache`. Thanks @magnaprog!
 
 ## 0.20 — 2026-04-07
 
@@ -256,7 +256,7 @@
 - CI/tooling reliability improved via pinned lint tools, deterministic macOS test execution, and PTY timing test stabilization plus Node 24-ready GitHub Actions upgrades (#292, #312, #290).
 
 ### Claude OAuth & Keychain
-- Claude OAuth creds are cached in CodexBar Keychain to reduce repeated prompts.
+- Claude OAuth creds are cached in TokenUsage Keychain to reduce repeated prompts.
 - Prompts can still appear when Claude OAuth credentials are expired, invalid, or missing and re-auth is required.
 - In Auto mode, background refresh keeps prompts suppressed; interactive prompts are limited to user actions (menu open or manual refresh).
 - OAuth-only mode remains strict (no silent Web/CLI fallback); Auto mode may do one delegated CLI refresh + one OAuth retry before falling back.
@@ -392,7 +392,7 @@
 - CLI: add pink accents, usage bars, and weekly pace lines to text output.
 - CLI: add config-backed provider settings, `--json-only`, and `--source api` for key-based providers.
 - CLI: add `config validate`/`config dump` commands and per-provider JSON error payloads.
-- CLI/App: move provider secrets + ordering to `~/.codexbar/config.json` (no Keychain persistence).
+- CLI/App: move provider secrets + ordering to `~/.tokenusage/config.json` (no Keychain persistence).
 - Providers: resolve API tokens from config/env only (no Keychain fallback).
 
 ### Dev & Tests
@@ -424,7 +424,7 @@
 
 ## 0.16.0 — 2025-12-29
 - Menu bar: optional “percent mode” (provider brand icons + percentage labels) via Advanced toggle.
-- CLI: add `codexbar cost` to print local cost usage (text/JSON) for Codex + Claude.
+- CLI: add `tokenusage cost` to print local cost usage (text/JSON) for Codex + Claude.
 - Cost: align local cost scanner with ccusage; stabilize parsing/decoding and handle large JSONL lines.
 - Claude: skip pricing for unknown models (tokens still tracked) to avoid hard-coded legacy prices.
 - Performance: reduce menu bar CPU usage by caching morph icons, skipping redundant status-item updates, and caching provider enablement/order during animations.
@@ -448,7 +448,7 @@
 
 ## 0.15.0 — 2025-12-28
 - New providers: Droid (Factory), Cursor, z.ai, Copilot.
-- macOS: CodexBar now supports Intel Macs (x86_64 builds + Sonoma fallbacks). Thanks @epoyraz!
+- macOS: TokenUsage now supports Intel Macs (x86_64 builds + Sonoma fallbacks). Thanks @epoyraz!
 - Droid (Factory): new provider with Standard + Premium usage via browser cookies, plus dashboard + status links. Thanks @shashank-factory!
 - Menu: allow multi-line error messages in the provider subtitle (up to 4 lines).
 - Menu: fix subtitle sizing for multi-line error states.
@@ -459,7 +459,7 @@
 - Codex: OpenAI web dashboard is now the primary source for usage + credits; CLI fallback only when no matching cookies exist.
 - Claude: prefer OAuth when credentials exist; fall back to web cookies or CLI (thanks @ibehnam).
 - CLI: replace `--web`/`--claude-source` with `--source` (auto/web/cli/oauth); auto falls back only when cookies are missing.
-- Homebrew: cask now installs the `codexbar` CLI symlink. Thanks @dalisoft!
+- Homebrew: cask now installs the `tokenusage` CLI symlink. Thanks @dalisoft!
 - Cursor: add new usage provider with browser cookie auth (cursor.com + cursor.sh), on-demand bar support, and dashboard access.
 - Cursor: keep stored sessions on transient failures; clear only on invalid auth.
 - z.ai: new provider support with Tokens + MCP usage bars and MCP details submenu; API token now lives in Preferences (stored in Keychain); usage bars respect the show-used toggle. Thanks @uwe-schwarz for the initial work!
@@ -467,7 +467,7 @@
 - Preferences: fix Advanced Display checkboxes and move the Quit button to the bottom of General.
 - Preferences: hide “Augment Claude via web” unless Claude usage source is CLI; rename the cost toggle to “Show cost summary”.
 - Preferences: add an Advanced toggle to show/hide optional Codex Credits + Claude Extra usage sections (on by default).
-- Widgets: add a new “CodexBar Switcher” widget that lets you switch providers and remember the selection.
+- Widgets: add a new “TokenUsage Switcher” widget that lets you switch providers and remember the selection.
 - Menu: provider switcher now uses crisp brand icons with equal-width segments and a per-provider usage indicator.
 - Menu: tighten provider switcher sizing and increase spacing between label and weekly indicator bar.
 - Menu: provider switcher no longer forces a wider menu when many providers are enabled; segments clamp to the menu width.
@@ -475,7 +475,7 @@
 - Dev: `compile_and_run.sh` now force-kills old instances to avoid launching duplicates.
 - Dev: `compile_and_run.sh` now waits for slow launches (polling for the process).
 - Dev: `compile_and_run.sh` now launches a single app instance (no more extra windows).
-- CI: build/test Linux `CodexBarCLI` (x86_64 + aarch64) and publish release assets as `CodexBarCLI-<tag>-linux-<arch>.tar.gz` (+ `.sha256`).
+- CI: build/test Linux `TokenUsageCLI` (x86_64 + aarch64) and publish release assets as `TokenUsageCLI-<tag>-linux-<arch>.tar.gz` (+ `.sha256`).
 - CLI: add alias fallback for Codex/Claude detection when PATH lookups fail.
 - Providers: support Arc browser cookies for Factory/Droid (and other Chromium-based cookie imports).
 - Providers: support ChatGPT Atlas browser data for Chromium cookie imports.
@@ -576,7 +576,7 @@
 - Claude trust prompts (“Do you trust the files in this folder?”) are now auto-accepted during probes to prevent stuck refreshes. Thanks @tobihagemann!
 
 ## 0.8.0 — 2025-12-17
-- CodexBar is now available via Homebrew: `brew install --cask steipete/tap/codexbar` (updates via `brew upgrade --cask steipete/tap/codexbar`).
+- TokenUsage is now available via Homebrew: `brew install --cask steipete/tap/tokenusage` (updates via `brew upgrade --cask steipete/tap/tokenusage`).
 - Added session quota notifications for the sliding 5-hour window (Codex + Claude): notifies when it hits 0% and when it’s available again, based only on observed refresh data (including startup when already depleted). Thanks @GKannanDev!
 
 ## 0.7.3 — 2025-12-17
@@ -611,9 +611,9 @@
 - Claude CLI probes stop passing `--dangerously-skip-permissions`, aligning with the default permission prompt and avoiding hidden first-run failures.
 
 ## 0.6.0 — 2025-12-04
-- New bundled CLI (`codexbar`) with single `usage` command, `--format text|json`, `--status`, and fast `-h/-V`.
+- New bundled CLI (`tokenusage`) with single `usage` command, `--format text|json`, `--status`, and fast `-h/-V`.
 - CLI output now shows consistent headers (`Codex 0.x.y (codex-cli)`, `Claude Code <ver> (claude)`) and JSON includes `source` + `status`.
-- Advanced prefs install button symlinks `codexbar` into /usr/local/bin and /opt/homebrew/bin; docs refreshed.
+- Advanced prefs install button symlinks `tokenusage` into /usr/local/bin and /opt/homebrew/bin; docs refreshed.
 
 ## 0.5.7 — 2025-11-26
 - Status Page and Usage Dashboard menu actions now honor the icon you click; Codex menus no longer open the Claude status site.
@@ -695,7 +695,7 @@
 
 ## 0.2.0 — 2025-11-16
 - CADisplayLink-based loading animations (macOS 15 displayLink API) with randomized patterns (Knight Rider, Cylon, outside-in, race, pulse) and debug replay cycling through all.
-- Debug replay toggle (`defaults write com.steipete.codexbar debugMenuEnabled -bool YES`) to view every pattern.
+- Debug replay toggle (`defaults write com.steipete.tokenusage debugMenuEnabled -bool YES`) to view every pattern.
 - Usage Dashboard link in menu; menu layout tweaked.
 - Updated time now shows relative formatting when fresher than 24h; refactored sources into smaller files for maintainability.
 - Version bumped to 0.2.0 (4).
@@ -713,10 +713,10 @@
 - Usage parser scans newest session logs until it finds `token_count` events.
 - Icon pipeline fixed: regenerated `.icns` via ictool with proper transparency (docs in docs/icon.md).
 - Added lint/format configs, Swift Testing, strict concurrency, and usage parser tests.
-- Notarized release build "CodexBar-0.1.0.zip" remains current artifact; app version 0.1.1.
+- Notarized release build "TokenUsage-0.1.0.zip" remains current artifact; app version 0.1.1.
 
 ## 0.1.0 — 2025-11-16
-- Initial CodexBar release: macOS 15+ menu bar app, no Dock icon.
+- Initial TokenUsage release: macOS 15+ menu bar app, no Dock icon.
 - Reads latest Codex CLI `token_count` events from session logs (5h + weekly usage, reset times); no extra login or browser scraping.
 - Shows account email/plan decoded locally from `auth.json`.
 - Horizontal dual-bar icon (top = 5h, bottom = weekly); dims on errors.

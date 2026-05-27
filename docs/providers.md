@@ -1,5 +1,5 @@
 ---
-summary: "Provider data sources and parsing overview for every registered CodexBar provider."
+summary: "Provider data sources and parsing overview for every registered TokenUsage provider."
 read_when:
   - Adding or modifying provider fetch/parsing
   - Adjusting provider labels, toggles, or metadata
@@ -14,7 +14,7 @@ Source labels (CLI/header): `openai-web`, `web`, `oauth`, `api`, `local`, `cli`,
 
 Cookie-based providers expose a Cookie source picker (Automatic or Manual) in Settings → Providers.
 Some browser cookie imports are cached in Keychain and reused until the session is invalid. API keys, manual cookie
-headers, source selection, provider ordering, and token accounts are stored in `~/.codexbar/config.json`.
+headers, source selection, provider ordering, and token accounts are stored in `~/.tokenusage/config.json`.
 
 | Provider | Strategies (ordered for auto) |
 | --- | --- |
@@ -65,7 +65,7 @@ headers, source selection, provider ordering, and token accounts are stored in `
 - Details: `docs/claude.md`.
 
 ## z.ai
-- API token from `~/.codexbar/config.json` (`providers[].apiKey`) or `Z_AI_API_KEY` env var.
+- API token from `~/.tokenusage/config.json` (`providers[].apiKey`) or `Z_AI_API_KEY` env var.
 - Supports global and BigModel CN quota hosts; override with `Z_AI_API_HOST` or `Z_AI_QUOTA_URL`.
 - Status: none yet.
 - Details: `docs/zai.md`.
@@ -83,14 +83,14 @@ headers, source selection, provider ordering, and token accounts are stored in `
 - Details: `docs/kimi.md`.
 
 ## Kilo
-- API token from `~/.codexbar/config.json` (`providers[].apiKey`) or `KILO_API_KEY`.
+- API token from `~/.tokenusage/config.json` (`providers[].apiKey`) or `KILO_API_KEY`.
 - Auto mode tries API first and falls back to CLI auth when API credentials are missing or unauthorized.
 - CLI auth source: `~/.local/share/kilo/auth.json` (`kilo.access`), typically created by `kilo login`.
 - Status: none yet.
 - Details: `docs/kilo.md`.
 
 ## Kimi K2
-- API key via `~/.codexbar/config.json` or `KIMI_K2_API_KEY`/`KIMI_API_KEY` env var.
+- API key via `~/.tokenusage/config.json` or `KIMI_K2_API_KEY`/`KIMI_API_KEY` env var.
 - Shows credit usage based on consumed/remaining totals.
 - Status: none yet.
 - Details: `docs/kimi-k2.md`.
@@ -122,7 +122,7 @@ headers, source selection, provider ordering, and token accounts are stored in `
 ## OpenCode Go
 - Web dashboard via browser cookies (`opencode.ai`).
 - Uses the workspace Go page/server data for rolling 5-hour, weekly, and optional monthly usage windows.
-- Optional workspace ID comes from `~/.codexbar/config.json` (`providers[].workspaceID`) or `CODEXBAR_OPENCODEGO_WORKSPACE_ID`.
+- Optional workspace ID comes from `~/.tokenusage/config.json` (`providers[].workspaceID`) or `TOKENUSAGE_OPENCODEGO_WORKSPACE_ID`.
 - Status: none yet.
 - Details: `docs/opencode.md`.
 
@@ -194,12 +194,12 @@ headers, source selection, provider ordering, and token accounts are stored in `
 - Details: `docs/ollama.md`.
 
 ## Synthetic
-- API key from `~/.codexbar/config.json` (`providers[].apiKey`) or `SYNTHETIC_API_KEY`.
+- API key from `~/.tokenusage/config.json` (`providers[].apiKey`) or `SYNTHETIC_API_KEY`.
 - Shows rolling five-hour, weekly token, search-hourly, and cost/credit quota lanes when present.
 - Status: none yet.
 
 ## OpenRouter
-- API token from `~/.codexbar/config.json` (`providers[].apiKey`) or `OPENROUTER_API_KEY` env var.
+- API token from `~/.tokenusage/config.json` (`providers[].apiKey`) or `OPENROUTER_API_KEY` env var.
 - Reads credits and key rate-limit info from OpenRouter APIs.
 - Override base URL with `OPENROUTER_API_URL` env var.
 - Status: `https://status.openrouter.ai` (link only, no auto-polling yet).
@@ -233,7 +233,7 @@ headers, source selection, provider ordering, and token accounts are stored in `
 - Details: `docs/deepseek.md`.
 
 ## Codebuff
-- API token from `~/.codexbar/config.json`, `CODEBUFF_API_KEY`, or `~/.config/manicode/credentials.json` created by `codebuff login`.
+- API token from `~/.tokenusage/config.json`, `CODEBUFF_API_KEY`, or `~/.config/manicode/credentials.json` created by `codebuff login`.
 - Reads usage and subscription data from Codebuff APIs.
 - Shows credit balance, weekly rate limit, reset timing, subscription status, and auto-top-up flag when present.
 - Override base URL with `CODEBUFF_API_URL`.

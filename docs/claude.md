@@ -42,7 +42,7 @@ Usage source picker:
 
 ## OAuth API (preferred)
 - Credentials:
-  - CodexBar OAuth cache when available.
+  - TokenUsage OAuth cache when available.
   - File fallback: `~/.claude/.credentials.json`.
   - Claude CLI Keychain bootstrap/repair fallback: `Claude Code-credentials`.
 - Requires `user:profile` scope (CLI tokens with only `user:inference` cannot call usage).
@@ -63,7 +63,7 @@ Usage source picker:
 ## Web API (cookies)
 - Preferences → Providers → Claude → Cookie source (Automatic or Manual).
 - Manual mode accepts a `Cookie:` header from a claude.ai request.
-- Multi-account manual tokens: add entries to `~/.codexbar/config.json` (`tokenAccounts`) and set Claude cookies to
+- Multi-account manual tokens: add entries to `~/.tokenusage/config.json` (`tokenAccounts`) and set Claude cookies to
   Manual. The menu can show all accounts stacked or a switcher bar (Preferences → Advanced → Display).
 - Claude token accounts accept either `sessionKey` cookies or OAuth access tokens (`sk-ant-oat...`). OAuth-token
   accounts route to the OAuth path and disable cookie mode; session-key or cookie-header accounts stay in manual
@@ -76,7 +76,7 @@ Usage source picker:
 - Domain: `claude.ai`.
 - Cookie name required:
   - `sessionKey` (value prefix `sk-ant-...`).
-- Cached cookies: Keychain cache `com.steipete.codexbar.cache` (account `cookie.claude`, source + timestamp).
+- Cached cookies: Keychain cache `com.steipete.tokenusage.cache` (account `cookie.claude`, source + timestamp).
   Reused before re-importing from browsers.
 - API calls (all include `Cookie: sessionKey=<value>`):
   - `GET https://claude.ai/api/organizations` → org UUID.
@@ -119,15 +119,15 @@ Usage source picker:
   - pi sessions attribute `anthropic` assistant usage to Claude and bucket it by assistant-turn timestamp, so a single pi
     session can contribute to multiple models/days.
 - Cache:
-  - Native + merged provider cache: `~/Library/Caches/CodexBar/cost-usage/claude-v2.json`
-  - pi session cache: `~/Library/Caches/CodexBar/cost-usage/pi-sessions-v1.json`
+  - Native + merged provider cache: `~/Library/Caches/TokenUsage/cost-usage/claude-v2.json`
+  - pi session cache: `~/Library/Caches/TokenUsage/cost-usage/pi-sessions-v1.json`
 
 ## Key files
-- OAuth: `Sources/CodexBarCore/Providers/Claude/ClaudeOAuth/*`
-- Web API: `Sources/CodexBarCore/Providers/Claude/ClaudeWeb/ClaudeWebAPIFetcher.swift`
-- CLI PTY: `Sources/CodexBarCore/Providers/Claude/ClaudeStatusProbe.swift`,
-  `Sources/CodexBarCore/Providers/Claude/ClaudeCLISession.swift`
-- Cost usage: `Sources/CodexBarCore/CostUsageFetcher.swift`,
-  `Sources/CodexBarCore/PiSessionCostScanner.swift`,
-  `Sources/CodexBarCore/PiSessionCostCache.swift`,
-  `Sources/CodexBarCore/Vendored/CostUsage/*`
+- OAuth: `Sources/TokenUsageCore/Providers/Claude/ClaudeOAuth/*`
+- Web API: `Sources/TokenUsageCore/Providers/Claude/ClaudeWeb/ClaudeWebAPIFetcher.swift`
+- CLI PTY: `Sources/TokenUsageCore/Providers/Claude/ClaudeStatusProbe.swift`,
+  `Sources/TokenUsageCore/Providers/Claude/ClaudeCLISession.swift`
+- Cost usage: `Sources/TokenUsageCore/CostUsageFetcher.swift`,
+  `Sources/TokenUsageCore/PiSessionCostScanner.swift`,
+  `Sources/TokenUsageCore/PiSessionCostCache.swift`,
+  `Sources/TokenUsageCore/Vendored/CostUsage/*`
