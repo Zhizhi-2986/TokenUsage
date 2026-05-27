@@ -11,6 +11,9 @@ enum ProviderSettingsMetrics {
     static let reorderHandleSize: CGFloat = 12
     static let reorderDotSize: CGFloat = 2
     static let reorderDotSpacing: CGFloat = 3
+    static let pinFavoriteButtonSize: CGFloat = 18
+    static let pinFavoriteIconSize: CGFloat = 11
+    static let pinFavoriteButtonSpacing: CGFloat = 2
     static let pickerLabelWidth: CGFloat = 92
     static let sidebarWidth: CGFloat = 240
     static let sidebarCornerRadius: CGFloat = 12

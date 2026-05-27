@@ -352,7 +352,40 @@ extension SettingsStore {
         if self.providerOrder.isEmpty {
             self.updateProviderState(config: self.configSnapshot)
         }
-        return self.providerOrder
+        let configByID = Dictionary(
+            uniqueKeysWithValues: self.configSnapshot.providers.map { ($0.id, $0) })
+        var pinned: [UsageProvider] = []
+        var unpinned: [UsageProvider] = []
+        for provider in self.providerOrder {
+            let config = configByID[provider]
+            let effectivePinned = (config?.isPinned == true) || (config?.isFavorite == true)
+            if effectivePinned {
+                pinned.append(provider)
+            } else {
+                unpinned.append(provider)
+            }
+        }
+        return pinned + unpinned
+    }
+
+    func isProviderPinned(provider: UsageProvider) -> Bool {
+        self.configSnapshot.providerConfig(for: provider)?.isPinned == true
+    }
+
+    func isProviderFavorite(provider: UsageProvider) -> Bool {
+        self.configSnapshot.providerConfig(for: provider)?.isFavorite == true
+    }
+
+    func setProviderPinned(provider: UsageProvider, pinned: Bool) {
+        self.updateProviderConfig(provider: provider) { entry in
+            entry.isPinned = pinned ? true : nil
+        }
+    }
+
+    func setProviderFavorite(provider: UsageProvider, favorite: Bool) {
+        self.updateProviderConfig(provider: provider) { entry in
+            entry.isFavorite = favorite ? true : nil
+        }
     }
 
     func moveProvider(fromOffsets: IndexSet, toOffset: Int) {

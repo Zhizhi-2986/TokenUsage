@@ -49,6 +49,16 @@ struct ProvidersPane: View {
                 selection: self.$selectedProvider,
                 moveProviders: { fromOffsets, toOffset in
                     self.settings.moveProvider(fromOffsets: fromOffsets, toOffset: toOffset)
+                },
+                isPinned: { provider in self.settings.isProviderPinned(provider: provider) },
+                isFavorite: { provider in self.settings.isProviderFavorite(provider: provider) },
+                onTogglePin: { provider in
+                    let pinned = self.settings.isProviderPinned(provider: provider)
+                    self.settings.setProviderPinned(provider: provider, pinned: !pinned)
+                },
+                onToggleFavorite: { provider in
+                    let favorite = self.settings.isProviderFavorite(provider: provider)
+                    self.settings.setProviderFavorite(provider: provider, favorite: !favorite)
                 })
 
             if let provider = self.selectedProvider ?? self.providers.first {

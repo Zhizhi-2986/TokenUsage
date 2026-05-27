@@ -10,6 +10,10 @@ struct ProviderSidebarListView: View {
     let subtitle: (UsageProvider) -> String
     @Binding var selection: UsageProvider?
     let moveProviders: (IndexSet, Int) -> Void
+    let isPinned: (UsageProvider) -> Bool
+    let isFavorite: (UsageProvider) -> Bool
+    let onTogglePin: (UsageProvider) -> Void
+    let onToggleFavorite: (UsageProvider) -> Void
     @State private var draggingProvider: UsageProvider?
 
     var body: some View {
@@ -21,7 +25,11 @@ struct ProviderSidebarListView: View {
                         store: self.store,
                         isEnabled: self.isEnabled(provider),
                         subtitle: self.subtitle(provider),
-                        draggingProvider: self.$draggingProvider)
+                        draggingProvider: self.$draggingProvider,
+                        isPinned: self.isPinned(provider),
+                        isFavorite: self.isFavorite(provider),
+                        onTogglePin: { self.onTogglePin(provider) },
+                        onToggleFavorite: { self.onToggleFavorite(provider) })
                         .padding(.horizontal, 8)
                         .background(
                             RoundedRectangle(cornerRadius: 6, style: .continuous)
@@ -61,6 +69,10 @@ private struct ProviderSidebarRowView: View {
     @Binding var isEnabled: Bool
     let subtitle: String
     @Binding var draggingProvider: UsageProvider?
+    let isPinned: Bool
+    let isFavorite: Bool
+    let onTogglePin: () -> Void
+    let onToggleFavorite: () -> Void
 
     var body: some View {
         let isRefreshing = self.store.refreshingProviders.contains(self.provider)
@@ -102,7 +114,27 @@ private struct ProviderSidebarRowView: View {
                     .frame(height: ProviderSettingsMetrics.sidebarSubtitleHeight, alignment: .topLeading)
             }
 
-            Spacer(minLength: 8)
+            HStack(spacing: ProviderSettingsMetrics.pinFavoriteButtonSpacing) {
+                Button(action: self.onTogglePin) {
+                    Image(systemName: self.isPinned ? "pin.fill" : "pin")
+                        .font(.system(size: ProviderSettingsMetrics.pinFavoriteIconSize, weight: .medium))
+                }
+                .buttonStyle(.borderless)
+                .frame(width: ProviderSettingsMetrics.pinFavoriteButtonSize, height: ProviderSettingsMetrics.pinFavoriteButtonSize)
+                .help(self.isPinned ? "Unpin provider" : "Pin provider to top")
+                .accessibilityLabel(self.isPinned ? "Unpin" : "Pin")
+
+                Button(action: self.onToggleFavorite) {
+                    Image(systemName: self.isFavorite ? "star.fill" : "star")
+                        .font(.system(size: ProviderSettingsMetrics.pinFavoriteIconSize, weight: .medium))
+                }
+                .buttonStyle(.borderless)
+                .frame(width: ProviderSettingsMetrics.pinFavoriteButtonSize, height: ProviderSettingsMetrics.pinFavoriteButtonSize)
+                .help(self.isFavorite ? "Remove from favorites" : "Add to favorites")
+                .accessibilityLabel(self.isFavorite ? "Remove from favorites" : "Add to favorites")
+            }
+
+            Spacer(minLength: 4)
 
             Toggle("", isOn: self.$isEnabled)
                 .labelsHidden()
