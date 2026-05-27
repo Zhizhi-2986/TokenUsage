@@ -47,7 +47,17 @@ public struct CodexBarConfig: Codable, Sendable {
     }
 
     public func orderedProviders() -> [UsageProvider] {
-        self.providers.map(\.id)
+        var pinned: [UsageProvider] = []
+        var unpinned: [UsageProvider] = []
+        for config in self.providers {
+            let effectivePinned = (config.isPinned == true) || (config.isFavorite == true)
+            if effectivePinned {
+                pinned.append(config.id)
+            } else {
+                unpinned.append(config.id)
+            }
+        }
+        return pinned + unpinned
     }
 
     public func enabledProviders(
@@ -85,6 +95,8 @@ public struct ProviderConfig: Codable, Sendable, Identifiable {
     public var enterpriseHost: String?
     public var tokenAccounts: ProviderTokenAccountData?
     public var codexActiveSource: CodexActiveSource?
+    public var isPinned: Bool?
+    public var isFavorite: Bool?
 
     public init(
         id: UsageProvider,
@@ -98,7 +110,9 @@ public struct ProviderConfig: Codable, Sendable, Identifiable {
         workspaceID: String? = nil,
         enterpriseHost: String? = nil,
         tokenAccounts: ProviderTokenAccountData? = nil,
-        codexActiveSource: CodexActiveSource? = nil)
+        codexActiveSource: CodexActiveSource? = nil,
+        isPinned: Bool? = nil,
+        isFavorite: Bool? = nil)
     {
         self.id = id
         self.enabled = enabled
@@ -112,6 +126,8 @@ public struct ProviderConfig: Codable, Sendable, Identifiable {
         self.enterpriseHost = enterpriseHost
         self.tokenAccounts = tokenAccounts
         self.codexActiveSource = codexActiveSource
+        self.isPinned = isPinned
+        self.isFavorite = isFavorite
     }
 
     public var sanitizedAPIKey: String? {
